@@ -5,10 +5,12 @@
   "author": "Kaique Lupo Leite <klupo@twilio.com>",
   "bugs": "https://github.com/twilio-infra-as-code/plugin-twilio-infra/issues",
   "dependencies": {
-    "@oclif/command": "^1.5.19",
+    "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.13.3",
+    "@pulumi/pulumi": "^3.2.0",
     "@twilio/cli-core": "^4.3.3",
     "chalk": "^4.1.0",
+    "dotenv": "^9.0.0",
     "inquirer": "^8.0.0",
     "lodash.camelcase": "^4.3.0",
     "lodash.kebabcase": "^4.1.1",

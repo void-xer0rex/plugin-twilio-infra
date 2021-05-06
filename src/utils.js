@@ -1,5 +1,10 @@
 const { TwilioCliError } = require('@twilio/cli-core').services.error;
 
+const auto = require("@pulumi/pulumi/automation");
+const upath = require("upath");
+const fs = require('fs')
+const { flags } = require('@oclif/command');
+
 const util = require('util');
 const childProcess = require('child_process');
 const exec = util.promisify(childProcess.exec);
@@ -64,7 +69,60 @@ async function runPulumiCommand(args, interactive = true, twilioClient) {
   }
 }
 
+async function runAutomationAPICommand(twilioClient, flags, command) {
+
+  const stackName = flags.stack || "dev";
+  const envPath = upath.joinSafe(process.cwd(), flags.envFile || `./.${stackName}.env`);
+
+  const args = {
+    stackName,
+    workDir: process.cwd()
+  };
+
+  let envFile = {};
+
+  if (fs.existsSync(envPath)) {
+
+    const dotenv = require('dotenv').config({ path: envPath });
+    envFile = dotenv.parsed;
+
+    console.info(`The following env file was loaded: ${envPath}`)
+
+  } else if(flags.envFile) {
+
+    console.warn("No env file found");
+
+  }
+
+  const stack = await auto.LocalWorkspace.createOrSelectStack(args, { 
+    envVars: {
+      TWILIO_ACCOUNT_SID: twilioClient.accountSid,
+      TWILIO_AUTH_TOKEN: twilioClient.authToken,
+      TWILIO_USERNAME: twilioClient.username,
+      TWILIO_PASSWORD: twilioClient.password,
+      ...envFile
+    } 
+  });
+
+  await stack[command]({ onOutput: console.info });
+
+}
+
+const defaultFlags = {
+  stack: flags.string({
+    char: 's',
+    description: 'Name of the stack',
+  }),
+  envFile: flags.string({
+    char: 'e',
+    description: 'Environment variable file relative path',
+  })
+}
+
+
 module.exports = {
   runPulumiCommand,
+  runAutomationAPICommand,
+  defaultFlags,
   Printer,
 };
