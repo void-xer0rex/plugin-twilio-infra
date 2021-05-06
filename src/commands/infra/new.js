@@ -16,7 +16,7 @@ class InfraNew extends TwilioClientCommand {
         'npm',
         ['install', 'twilio', 'twilio-pulumi-provider'],
         () => {
-          spinner.succeed('Addtional dependencies installed');
+          spinner.succeed('Additional dependencies installed');
           Printer.printSuccess(
             'Project initialized succesfully\n\nAdd you resources to index.js and execute\n  twilio infra:deploy\nto deploy them to your Twilio project!'
           );
