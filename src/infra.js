@@ -1,4 +1,5 @@
 const fs = require('fs');
+
 const TWILIO_INFRA_FILENAME = '.twilio-infra';
 
 /**
@@ -19,7 +20,7 @@ function writeInfra(infras) {
   try {
     fs.writeFileSync(TWILIO_INFRA_FILENAME, JSON.stringify(infras));
   } catch (err) {
-    //TODO: Error handling
+    // TODO: Error handling
   }
 }
 
@@ -41,7 +42,7 @@ function removeInfraFile() {
  */
 async function addInfra(accountSid, environment, deployed) {
   deployed = deployed || false;
-  let infras = readInfra();
+  const infras = readInfra();
   infras[accountSid] = { environment, deployed };
   writeInfra(infras);
   return infras;
@@ -54,7 +55,7 @@ async function addInfra(accountSid, environment, deployed) {
  * @return {Object} Deployment list, or empty object if no deployment left
  */
 function removeInfra(accountSid) {
-  let infras = readInfra();
+  const infras = readInfra();
   if (infras[accountSid]) {
     delete infras[accountSid];
   }
@@ -67,7 +68,7 @@ function removeInfra(accountSid) {
 }
 
 function destroyInfra(accountSid) {
-  let infras = readInfra();
+  const infras = readInfra();
   if (infras[accountSid]) {
     infras[accountSid].deployed = false;
   }

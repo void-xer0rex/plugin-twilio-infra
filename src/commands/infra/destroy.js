@@ -9,9 +9,9 @@ class InfraDestroy extends TwilioClientCommand {
   async run() {
     await super.run();
 
-    let command = ['destroy'];
-    if (this.flags["non-interactive"]) {
-      command.push("--yes");
+    const command = ['destroy'];
+    if (this.flags['non-interactive']) {
+      command.push('--yes');
     }
     await runPulumiCommand(command, true, this.twilioClient);
 
@@ -19,22 +19,19 @@ class InfraDestroy extends TwilioClientCommand {
       destroyInfra(this.twilioClient.accountSid);
       Printer.printSuccess('Resource(s) destroyed successfully!');
     } catch (error) {
-      throw new TwilioCliError('Error running destroy: ' + error.message);
+      throw new TwilioCliError(`Error running destroy: ${error.message}`);
     }
   }
 }
 
-InfraDestroy.flags = Object.assign(
-  {
-    'non-interactive': flags.boolean({
-      char: 'n',
-      description: 'Destroys without interactive confirmation.',
-    })
-  },
-  TwilioClientCommand.flags,
-);
+InfraDestroy.flags = {
+  'non-interactive': flags.boolean({
+    char: 'n',
+    description: 'Destroys without interactive confirmation.',
+  }),
+  ...TwilioClientCommand.flags,
+};
 
-InfraDestroy.description =
-  'Destroy deployed resources';
+InfraDestroy.description = 'Destroy deployed resources';
 
 module.exports = InfraDestroy;

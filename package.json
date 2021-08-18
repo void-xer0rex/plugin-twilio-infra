@@ -31,8 +31,8 @@
     "@twilio/cli-test": "^2.0.2",
     "all-contributors-cli": "^6.7.0",
     "chai": "^4.2.0",
-    "eslint": "^4.19.1",
-    "eslint-config-oclif": "^1.5.1",
+    "eslint": "^7.32.0",
+    "eslint-config-twilio": "^1.35.1",
     "globby": "^8.0.2",
     "mocha": "^5.2.0",
     "nyc": "^13.3.0"
@@ -97,6 +97,7 @@
     "url": "https://github.com/twilio-infra-as-code/plugin-twilio-infra"
   },
   "scripts": {
-    "linter:fix": "eslint --ignore-path .gitignore . --fix"
+    "lint": "eslint --ext js src/",
+    "lint:fix": "npm run lint -- --fix"
   }
 }

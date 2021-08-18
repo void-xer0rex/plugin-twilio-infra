@@ -16,7 +16,7 @@ class Printer {
   }
 
   static printHeader(message) {
-    let decorator = '****************';
+    const decorator = '****************';
     console.log(chalk.magenta(`\n${decorator} ${message} ${decorator}\n`));
   }
 

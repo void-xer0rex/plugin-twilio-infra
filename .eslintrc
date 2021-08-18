@@ -1,22 +1,43 @@
 {
-  "extends": "oclif",
-  "plugins": ["mocha"],
-  "env": {
-    "mocha": true
-  },
+  "extends": [
+    "twilio"
+  ],
   "rules": {
-    "indent": ["error", 2],
-    "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"],
-    "object-curly-spacing": ["error", "always"],
+    "indent": [
+      "error",
+      2
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
     "no-console": "off",
     "mocha/no-exclusive-tests": "error",
     "node/no-extraneous-require": [
       "error",
       {
-        "allowModules": ["lodash", "request", "q"]
+        "allowModules": [
+          "lodash",
+          "request",
+          "q"
+        ]
       }
-    ]
+    ],
+    "import/no-unresolved": "warn",
+    "import/order": "warn",
+    "no-use-before-define": "warn",
+    "consistent-return": "warn"
   }
 }

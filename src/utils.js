@@ -1,13 +1,17 @@
 const { TwilioCliError } = require('@twilio/cli-core').services.error;
+
 const childProcess = require('child_process');
-const { readInfra } = require('./infra');
-const Printer = require('./printer');
-const fs = require('fs');
+
 const dotenv = require('dotenv');
 
+const { readInfra } = require('./infra');
+const Printer = require('./printer');
+
+const fs = require('fs');
+
 function getPulumiStack() {
-  let pulumiOut = runPulumiCommand(['stack', 'ls'], false);
-  let result = /^(.*?)\* /m.exec(pulumiOut);
+  const pulumiOut = runPulumiCommand(['stack', 'ls'], false);
+  const result = /^(.*?)\* /m.exec(pulumiOut);
   return result ? result[1] : null;
 }
 
@@ -15,35 +19,30 @@ function getPulumiStack() {
  * Add environment variable to process.env
  *
  * @param {{}} twilioClient Initialized Twilio Client
- * @param {*?} shouldGetEnvsFromFile Whether to search and load env file for the current stack  
+ * @param {*?} shouldGetEnvsFromFile Whether to search and load env file for the current stack
  * @return {{}} Environment key-value pairs
  */
 function getEnvironmentVariables(twilioClient, shouldGetEnvFromFile) {
-
   let envVars = process.env;
 
-  //remove recursion
-  if(shouldGetEnvFromFile) {
+  // remove recursion
+  if (shouldGetEnvFromFile) {
+    const environment = getPulumiStack();
 
-    let environment = getPulumiStack();
-
-    if(environment){
-
+    if (environment) {
       const envFilePath = `${process.cwd()}/.env.${environment}`;
 
       if (fs.existsSync(envFilePath)) {
+        const env = dotenv.config({ path: envFilePath });
 
-          const env = dotenv.config({ path: envFilePath });
-
-          envVars = {
-            ...envVars,
-            ...env.parsed
-          }
-
+        envVars = {
+          ...envVars,
+          ...env.parsed,
+        };
       }
     }
   }
-  
+
   if (twilioClient) {
     envVars.TWILIO_ACCOUNT_SID = twilioClient.accountSid;
     envVars.TWILIO_USERNAME = twilioClient.username;
@@ -64,10 +63,7 @@ function getEnvironmentVariables(twilioClient, shouldGetEnvFromFile) {
 
 function runPulumiCommand(args, interactive = true, twilioClient) {
   try {
-
-    const shouldGetEnvFromFile = 
-      !(args[0] === "stack" && args[1] === "ls") &&
-      (args[0] !== "new");
+    const shouldGetEnvFromFile = !(args[0] === 'stack' && args[1] === 'ls') && args[0] !== 'new';
 
     if (interactive) {
       Printer.printHeader('Pulumi CLI output');
@@ -82,11 +78,8 @@ function runPulumiCommand(args, interactive = true, twilioClient) {
       });
       return stdout.toString();
     }
-
   } catch (error) {
-    throw new TwilioCliError(
-      '\n\nError running Pulumi CLI command.\n ** ' + error.message
-    );
+    throw new TwilioCliError(`\n\nError running Pulumi CLI command.\n ** ${error.message}`);
   }
 }
 
@@ -99,10 +92,10 @@ function runPulumiCommand(args, interactive = true, twilioClient) {
 function getEnvironmentDeployment() {
   let result;
   try {
-    let stack = getPulumiStack();
-    let infras = readInfra();
+    const stack = getPulumiStack();
+    const infras = readInfra();
     if (stack && Object.keys(infras).length > 0) {
-      Object.keys(infras).forEach(sid => {
+      Object.keys(infras).forEach((sid) => {
         if (infras[sid].environment === stack) {
           result = sid;
         }
