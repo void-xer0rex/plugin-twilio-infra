@@ -28,11 +28,11 @@ class InfraEnvironmentSet extends TwilioClientCommand {
         Printer.print(
           `Environment ${chalk.green(
             environment,
-          } is not defined. Use:\n  twilio infra:environment:new\nto define a new environment and deploy it.`
+          )} is not defined. Use:\n  twilio infra:environment:new\nto define a new environment and deploy it.`,
         );
       }
     } catch (error) {
-      throw new TwilioCliError(`Error running \`infra:environment:set\`: ${  error.message}`);
+      throw new TwilioCliError(`Error running \`infra:environment:set\`: ${error.message}`);
     }
   }
 }

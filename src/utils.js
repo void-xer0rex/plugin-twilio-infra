@@ -1,15 +1,14 @@
-const { TwilioCliError } = require('@twilio/cli-core').services.error;
-
 const childProcess = require('child_process');
+const fs = require('fs');
 
+const { TwilioCliError } = require('@twilio/cli-core').services.error;
 const dotenv = require('dotenv');
 
 const { readInfra } = require('./infra');
 const Printer = require('./printer');
 
-const fs = require('fs');
-
 function getPulumiStack() {
+  // eslint-disable-next-line no-use-before-define
   const pulumiOut = runPulumiCommand(['stack', 'ls'], false);
   const result = /^(.*?)\* /m.exec(pulumiOut);
   return result ? result[1] : null;
@@ -72,12 +71,12 @@ function runPulumiCommand(args, interactive = true, twilioClient) {
         env: getEnvironmentVariables(twilioClient, shouldGetEnvFromFile),
       });
       Printer.printHeader('End of Pulumi CLI output');
-    } else {
-      const stdout = childProcess.execSync(`pulumi ${args.join(' ')}`, {
-        env: getEnvironmentVariables(twilioClient, shouldGetEnvFromFile),
-      });
-      return stdout.toString();
+      return undefined;
     }
+    const stdout = childProcess.execSync(`pulumi ${args.join(' ')}`, {
+      env: getEnvironmentVariables(twilioClient, shouldGetEnvFromFile),
+    });
+    return stdout.toString();
   } catch (error) {
     throw new TwilioCliError(`\n\nError running Pulumi CLI command.\n ** ${error.message}`);
   }

@@ -1,8 +1,7 @@
-const { TwilioClientCommand } = require('@twilio/cli-core').baseCommands;
-const { TwilioCliError } = require('@twilio/cli-core').services.error;
-
 const childProcess = require('child_process');
 
+const { TwilioClientCommand } = require('@twilio/cli-core').baseCommands;
+const { TwilioCliError } = require('@twilio/cli-core').services.error;
 const ora = require('ora');
 
 const { runPulumiCommand, Printer, getPulumiStack } = require('../../utils');

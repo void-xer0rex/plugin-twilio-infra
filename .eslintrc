@@ -24,20 +24,7 @@
       "always"
     ],
     "no-console": "off",
-    "mocha/no-exclusive-tests": "error",
-    "node/no-extraneous-require": [
-      "error",
-      {
-        "allowModules": [
-          "lodash",
-          "request",
-          "q"
-        ]
-      }
-    ],
-    "import/no-unresolved": "warn",
-    "import/order": "warn",
-    "no-use-before-define": "warn",
-    "consistent-return": "warn"
+    "import/no-unresolved": ["warn", {"amd": true}],
+    "prefer-named-capture-group": "off"
   }
 }
