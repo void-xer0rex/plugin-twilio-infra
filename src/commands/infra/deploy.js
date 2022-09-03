@@ -14,7 +14,7 @@ class InfraDeploy extends TwilioClientCommand {
   async run() {
     await super.run();
     let deployment = getEnvironmentDeployment();
-    if (deployment && deployment !== this.twilioClient.accountSid) {
+    if (deployment && deployment !== super.twilioClient.accountSid) {
       throw new TwilioCliError(
         `The current stack is already deployed to ${deployment}. Please switch to that profile or define a new environment`
       );
@@ -24,11 +24,11 @@ class InfraDeploy extends TwilioClientCommand {
     if (this.flags['non-interactive']) {
       command.push("--yes");
     }
-    runPulumiCommand(command, true, this.twilioClient);
+    runPulumiCommand(command, true, super.twilioClient);
 
     try {
       // Store account SID of the project used for deployment
-      addInfra(this.twilioClient.accountSid, getPulumiStack(), true);
+      addInfra(super.twilioClient.accountSid, getPulumiStack(), true);
     } catch (error) {
       throw new TwilioCliError('Error running deploy: ' + error.message);
     }

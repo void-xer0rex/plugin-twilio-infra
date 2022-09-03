@@ -22,10 +22,10 @@ class InfraEnvironmentSet extends TwilioClientCommand {
         runPulumiCommand(
           ['stack', 'select', environment],
           false,
-          this.twilioClient
+          super.twilioClient
         );
         Printer.printSuccess(`Environment set to ${environment}`);
-        if (twilioProject !== this.twilioClient.accountSid) {
+        if (twilioProject !== super.twilioClient.accountSid) {
           Printer.print(
             `Remember to switch to Twilio project ${twilioProject} before deploying the resources.`
           );

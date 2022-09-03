@@ -13,10 +13,10 @@ class InfraDestroy extends TwilioClientCommand {
     if (this.flags["non-interactive"]) {
       command.push("--yes");
     }
-    await runPulumiCommand(command, true, this.twilioClient);
+    await runPulumiCommand(command, true, super.twilioClient);
 
     try {
-      destroyInfra(this.twilioClient.accountSid);
+      destroyInfra(super.twilioClient.accountSid);
       Printer.printSuccess('Resource(s) destroyed successfully!');
     } catch (error) {
       throw new TwilioCliError('Error running destroy: ' + error.message);

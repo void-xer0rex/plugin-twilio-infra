@@ -18,8 +18,8 @@ class InfraNew extends TwilioClientCommand {
         ['install', 'twilio', 'twilio-pulumi-provider'],
         () => {
           spinner.succeed('Addtional dependencies installed');
-          if (this.twilioClient.accountSid) {
-            addInfra(this.twilioClient.accountSid, getPulumiStack());
+          if (super.twilioClient.accountSid) {
+            addInfra(super.twilioClient.accountSid, getPulumiStack());
           }
           Printer.printSuccess(
             'Project initialized succesfully\n\nAdd your resources to index.js and execute\n  twilio infra:deploy\nto deploy them to your Twilio project!'

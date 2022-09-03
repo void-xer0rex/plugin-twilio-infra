@@ -10,7 +10,7 @@ class InfraEnvironmentNew extends TwilioClientCommand {
     await super.run();
     try {
       let { args } = this.parse(InfraEnvironmentNew);
-      let accountSid = this.twilioClient.accountSid;
+      let accountSid = super.twilioClient.accountSid;
       let deploymentEnvironments = readInfra();
 
       if (
@@ -33,7 +33,7 @@ class InfraEnvironmentNew extends TwilioClientCommand {
           }
         }
         runPulumiCommand(['stack', 'init', args.environmentName]);
-        if (this.twilioClient) {
+        if (super.twilioClient) {
           addInfra(accountSid, getPulumiStack());
         }
         Printer.printSuccess(
